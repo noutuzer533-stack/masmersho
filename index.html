@@ -1,0 +1,362 @@
+<!DOCTYPE html>  <html lang="ru">    <head>      <meta charset="UTF-8">        <title>MASMER SHOP</title>        
+<style>        
+    body {        
+        margin: 0;        
+        font-family: Arial, sans-serif;        
+        background: #0a0a0a;        
+        color: white;        
+        overflow-x: hidden;        
+    }  #particles {        
+    position: fixed;        
+    width: 100%;        
+    height: 100%;        
+    top: 0;        
+    left: 0;        
+    background: radial-gradient(circle at center, #1a1a1a, #000000);        
+    z-index: -1;        
+    overflow: hidden;        
+}    .particle {        
+position: absolute;        
+width: 4px;        
+height: 4px;        
+background: #ff0066;        
+border-radius: 50%;        
+animation: move 8s linear infinite;        
+opacity: 0.7;  }
+
+@keyframes move {
+from { transform: translateY(0); }
+to { transform: translateY(-120vh); }
+}
+
+header {
+padding: 20px;
+background: #111;
+border-bottom: 2px solid #ff0066;
+display: flex;
+justify-content: space-between;
+align-items: center;
+position: sticky;
+top: 0;
+z-index: 10;
+}
+
+header h1 {
+color: #ff0066;
+font-size: 28px;
+text-shadow: 0 0 10px #ff0066;
+margin: 0;
+}
+
+.welcome-text {
+text-align: center;
+font-size: 36px;
+margin-top: 80px;
+text-shadow: 0 0 15px #ff0066;
+}
+
+.card {
+width: 300px;
+background: rgba(20, 20, 20, 0.85);
+border: 2px solid #ff0066;
+border-radius: 15px;
+padding: 20px;
+margin: 40px auto;
+text-align: center;
+box-shadow: 0 0 20px #ff0066;
+transition: 0.4s;
+}
+
+.card:hover {
+transform: scale(1.05);
+box-shadow: 0 0 30px #ff2b77;
+}
+
+button {
+margin-top: 20px;
+background: #ff0066;
+border: none;
+padding: 12px 25px;
+color: white;
+font-size: 18px;
+border-radius: 10px;
+cursor: pointer;
+transition: 0.3s;
+}
+
+button:hover {
+background: #ff2b88;
+transform: scale(1.1);
+box-shadow: 0 0 15px #ff2b88;
+}
+
+.pay-box {
+width: 350px;
+margin: 50px auto;
+padding: 20px;
+background: rgba(15, 15, 15, 0.9);
+border: 2px solid #0aff9d;
+border-radius: 15px;
+text-align: center;
+box-shadow: 0 0 15px #0aff9d;
+}
+
+select {
+width: 90%;
+padding: 10px;
+margin-top: 20px;
+font-size: 16px;
+border-radius: 8px;
+}
+
+.hidden {
+display: none;
+}
+
+/* Стиль для кнопки профиля в правом верхнем углу */
+.profile-btn {
+color: #ff0066;
+font-size: 18px;
+padding: 10px 20px;
+border-radius: 8px;
+border: 1px solid #ff0066;
+cursor: pointer;
+background-color: transparent;
+transition: 0.3s;
+}
+
+.profile-btn:hover {
+background-color: #ff0066;
+color: black;
+}
+
+/* Выпадающее меню профиля */
+.profile-dropdown {
+display: none;
+position: absolute;
+top: 50px;
+right: 20px;
+background-color: rgba(0, 0, 0, 0.8);
+padding: 20px;
+border-radius: 8px;
+width: 300px;
+box-shadow: 0 0 10px #ff0066;
+z-index: 1000;
+}
+
+.profile-dropdown p {
+font-size: 16px;
+margin-bottom: 10px;
+}
+
+.profile-dropdown button {
+width: 100%;
+background: #ff0066;
+border: none;
+padding: 12px 25px;
+color: white;
+font-size: 18px;
+border-radius: 10px;
+cursor: pointer;
+transition: 0.3s;
+}
+
+.profile-dropdown button:hover {
+background: #ff2b88;
+}
+
+.side-menu {
+position: fixed;
+top: 20%;
+right: 0;
+background-color: rgba(20, 20, 20, 0.8);
+padding: 20px;
+border-left: 2px solid #ff0066;
+z-index: 10;
+}
+
+.side-menu a {
+display: block;
+text-decoration: none;
+color: #fff;
+font-size: 20px;
+padding: 10px 20px;
+border-radius: 8px;
+border: 1px solid #ff0066;
+margin-bottom: 10px;
+transition: 0.3s;
+}
+
+.side-menu a:hover {
+background: #ff0066;
+color: black;
+}
+
+</style>  </head>
+
+<body>  <div id="particles"></div>  <header>        
+    <h1>MASMER SHOP</h1>        
+    <button class="profile-btn" onclick="toggleProfileDropdown()">Профиль</button>        
+    <div id="profileDropdown" class="profile-dropdown">        
+        <p>Имя: <span id="profileUsername"></span></p>        
+        <p>Дата регистрации: <span id="profileRegDate"></span></p>
+        <button onclick="logout()">Выйти</button>        
+    </div>        
+</header>  <!-- Форма регистрации / входа -->  <div id="authPanel" class="auth-form">        
+    <h2>Регистрация / Вход</h2>        
+    <input type="text" id="username" placeholder="Введите имя" required />        
+    <input type="email" id="email" placeholder="Введите Email" required />        
+    <input type="password" id="password" placeholder="Введите пароль" required />        
+    <button onclick="register()">Зарегистрироваться / Войти</button>        
+</div>  <!-- Панель пользователя -->  <div id="userPanel" class="hidden">        
+    <div class="user-profile">        
+        <h3>Добро пожаловать, <span id="userName"></span></h3>        
+        <button id="logoutBtn">Выйти</button>        
+    </div>        
+</div>  <div class="welcome-text">        
+    Вас приветствует сайт <b>MASMER SHOP</b><br>        
+    Пожалуйста, выберите каталог для покупки услуг        
+</div>  <!-- Услуги -->  <div id="rustBlock" class="card hidden">        
+    <h2>Услуга: Читы на Rust</h2>        
+    <p>Навсегда — <b>200 рублей</b></p>        
+    <button onclick="payRust()" id="buyRustBtn" disabled>Оплатить</button>        
+</div>  <div id="csBlock" class="card hidden">        
+    <h2>Услуга: Читы на CS2</h2>        
+    <p>Навсегда — <b>250 рублей</b></p>        
+    <button onclick="payCS()" id="buyCSBtn" disabled>Оплатить</button>        
+</div>  <div id="minecraftBlock" class="card hidden">        
+    <h2>Услуга: Читы на Minecraft</h2>        
+    <p>Навсегда — <b>300 рублей</b></p>        
+    <button onclick="payMinecraft()" id="buyMinecraftBtn" disabled>Оплатить</button>        
+</div>  <!-- Окно оплаты -->  <div id="payWindow" class="pay-box hidden">        
+    <h2>Оплата услуги</h2>        
+    <p>Сумма: <b>250 рублей</b></p>  <select>        
+    <option>Сбербанк</option>        
+</select>    <p id="payment-details" class="hidden">        
+    Пожалуйста, отправьте 250 рублей на карту: <b>2202 2082 7085 9227</b><br>        
+    После оплаты введите проверочный ключ для активации.        
+</p>    <button onclick="finishPay()">Продолжить</button>    
+<button onclick="backToService()">Назад</button>  </div>  <div id="keyForm" class="key-form hidden">        
+    <h2>Введите проверочный ключ</h2>        
+    <input type="text" id="keyInput" placeholder="Введите ключ..." />        
+    <button onclick="checkKey()">Проверить ключ</button>        
+    <p id="error-message" style="color: red; display: none;">Неверный ключ, попробуйте снова.</p>        
+    <p id="success-message" class="success-message hidden">Ключ подтвержден! Вам доступен файл.</p>        
+</div>  <div class="side-menu">        
+    <a href="#" onclick="showRust()">Rust</a>        
+    <a href="#" onclick="showCS()">CS2</a>        
+    <a href="#" onclick="showMinecraft()">Minecraft</a>        
+</div>  <script>        
+    let userData = null;    // Функция регистрации / входа        
+function register() {        
+    const username = document.getElementById('username').value;        
+    const email = document.getElementById('email').value;        
+    const password = document.getElementById('password').value;      // Сохраняем данные пользователя в localStorage        
+userData = { username, email, password, registrationDate: new Date() };        
+localStorage.setItem('userData', JSON.stringify(userData));        showUserPanel();
+enablePurchase();
+
+}
+
+// Функция для отображения панели пользователя
+function showUserPanel() {
+document.getElementById('authPanel').classList.add('hidden');
+document.getElementById('userPanel').classList.remove('hidden');
+document.getElementById('userName').innerText = userData.username;
+
+// Обновление информации в выпадающем меню профиля
+document.getElementById('profileUsername').innerText = userData.username;
+document.getElementById('profileRegDate').innerText = userData.registrationDate.toLocaleString();
+
+}
+  // Проверка на наличие данных пользователя
+if (localStorage.getItem('userData')) {
+userData = JSON.parse(localStorage.getItem('userData'));
+showUserPanel();
+enablePurchase();
+}
+
+// Логика для выхода
+document.getElementById('logoutBtn').addEventListener('click', function() {
+localStorage.removeItem('userData');
+location.reload();
+});
+
+// Показать или скрыть выпадающее меню профиля
+function toggleProfileDropdown() {
+const profileDropdown = document.getElementById('profileDropdown');
+profileDropdown.style.display = profileDropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+// Включение кнопок оплаты
+function enablePurchase() {
+document.getElementById("buyRustBtn").disabled = false;
+document.getElementById("buyCSBtn").disabled = false;
+document.getElementById("buyMinecraftBtn").disabled = false;
+}
+
+function showRust() {
+document.getElementById("rustBlock").classList.remove("hidden");
+document.getElementById("csBlock").classList.add("hidden");
+document.getElementById("minecraftBlock").classList.add("hidden");
+document.getElementById("payWindow").classList.add("hidden");
+}
+
+function showCS() {
+document.getElementById("csBlock").classList.remove("hidden");
+document.getElementById("rustBlock").classList.add("hidden");
+document.getElementById("minecraftBlock").classList.add("hidden");
+document.getElementById("payWindow").classList.add("hidden");
+}
+
+function showMinecraft() {
+document.getElementById("minecraftBlock").classList.remove("hidden");
+document.getElementById("rustBlock").classList.add("hidden");
+document.getElementById("csBlock").classList.add("hidden");
+document.getElementById("payWindow").classList.add("hidden");
+}
+
+function payRust() {
+document.getElementById("rustBlock").classList.add("hidden");
+document.getElementById("payWindow").classList.remove("hidden");
+}
+
+function payCS() {
+document.getElementById("csBlock").classList.add("hidden");
+document.getElementById("payWindow").classList.remove("hidden");
+}
+
+function payMinecraft() {
+document.getElementById("minecraftBlock").classList.add("hidden");
+document.getElementById("payWindow").classList.remove("hidden");
+}
+
+function finishPay() {
+document.getElementById("payment-details").classList.remove("hidden");
+alert("Пожалуйста, отправьте 250 рублей на карту: 2202 2082 7085 9227. Напишите в Telegram для получения ключа.");
+document.getElementById("keyForm").classList.remove("hidden");
+}
+
+function backToService() {
+document.getElementById("payWindow").classList.add("hidden");
+document.getElementById("rustBlock").classList.remove("hidden");
+}
+
+function checkKey() {
+const enteredKey = document.getElementById("keyInput").value;
+const correctKeyRust = "masmerbust";
+const correctKeyCS = "masmerbustksn";
+
+if (enteredKey === correctKeyRust || enteredKey === correctKeyCS) {
+document.getElementById("error-message").style.display = "none";
+document.getElementById("success-message").classList.remove("hidden");
+document.getElementById("keyForm").classList.add("hidden");
+} else {
+document.getElementById("error-message").style.display = "block";
+}
+
+}
+
+</script>  </body>
+
+</html>
